@@ -1,24 +1,19 @@
 package com.bezkoder.springjwt.controllers;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.bezkoder.springjwt.models.ERole;
 import com.bezkoder.springjwt.models.Role;
@@ -127,4 +122,13 @@ public class AuthController {
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
+
+  @GetMapping("/validate-token")
+  public ResponseEntity<?> validateJwtToken(@RequestParam String token){
+    Map<String,Boolean> map = new HashMap<String,Boolean>();
+    map.put("isValid", jwtUtils.validateJwtToken(token));
+    return new ResponseEntity<>(map, HttpStatus.OK);
+  }
+
+
 }
